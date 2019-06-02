@@ -8,11 +8,12 @@
         <h1>ВЕЖА</h1>
       </div>
       <div id="posts">
+        <Post v-for="(post, index) in posts" :key="index" :fulltext="post.text" :header="post.header" :imgPath="post.img" :reverseDir="index%2===1"/>
         <Post
-          fulltext="Blah blah blah blah blah blah 
+          fulltext="Blah blah blah blah blah blah
          blah blah blah blah blah blah blah blah blah
-         blah blah blah blah blah blah blah blah blah 
-         blah blah blah blah blah blah blah blah blah 
+         blah blah blah blah blah blah blah blah blah
+         blah blah blah blah blah blah blah blah blah
          blah blah blah blah blah blah blah blah blah!"
           header="Header"
         />
@@ -46,10 +47,9 @@ export default {
       console.log('start update posts');
       db.collection("Posts")
       .get()
-      .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          this.posts.push(doc.data().header);
-          console.log(doc.data().header);
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          this.posts.push(doc.data());
         });
       });
       console.log('end update posts');

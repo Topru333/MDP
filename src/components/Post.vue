@@ -118,9 +118,6 @@ export default {
 }
 
 @media (min-width: 1000px) {
-  #content {
-    flex-direction: row;
-  }
   .post {
     background-image: url("/postbackground.png");
     background-size: contain;
