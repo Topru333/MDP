@@ -9,17 +9,17 @@
       </div>
       <div id="posts">
         <Post
-          text="Blah blah blah blah blah blah 
+          fulltext="Blah blah blah blah blah blah 
          blah blah blah blah blah blah blah blah blah
          blah blah blah blah blah blah blah blah blah 
          blah blah blah blah blah blah blah blah blah 
          blah blah blah blah blah blah blah blah blah!"
           header="Header"
         />
-        <Post text="hello!" header="Header" :reverseDir="true"/>
-        <Post text="hello!" header="Header"/>
-        <Post text="hello!" header="Header" :reverseDir="true"/>
-        <Post text="hello!" header="Header"/>
+        <Post fulltext="hello!" header="Header" :reverseDir="true"/>
+        <Post fulltext="hello!" header="Header"/>
+        <Post fulltext="hello!" header="Header" :reverseDir="true"/>
+        <Post fulltext="hello!" header="Header"/>
       </div>
     </div>
   </div>
@@ -28,17 +28,36 @@
 <script>
 import Post from "./Post";
 import JQuery from "jquery";
+import db from "@/fb";
+
 let $ = JQuery;
 export default {
   name: "Home",
+  data: function() {
+    return {
+      posts: []
+    };
+  },
   components: {
     Post
   },
   methods: {
-    toScreenSizeX: function(a) {
-      let result = a * ($(window).width() / 1900);
-      return result;
+    updatePosts: function() {
+      console.log('start update posts');
+      db.collection("Posts")
+      .get()
+      .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          this.posts.push(doc.data().header);
+          console.log(doc.data().header);
+        });
+      });
+      console.log('end update posts');
     }
+  },
+  created() {
+    console.log("created");
+    this.updatePosts();
   },
   beforeMount() {
     $(window).scroll(function() {
@@ -58,8 +77,9 @@ export default {
         "transform",
         "translateY(-" + (scrollval / 9 + 7) + "%)"
       );
-      $(".post").css("filter", "sepia(" + (percent / 2 * 100) + "%)");
+      $(".post").css("filter", "sepia(" + (percent / 2) * 100 + "%)");
     });
+    console.log("mounted");
   }
 };
 </script>
@@ -70,6 +90,7 @@ export default {
   transform: translate(-50%, -10%);
   z-index: -10;
   margin-top: 60px;
+  background-color: #E5E4C9;
 }
 #header_img_front {
   position: absolute;
@@ -85,7 +106,7 @@ export default {
   background-color: #101C1C;
   z-index: -8;
 }
-@media only screen and (min-width: 700px) {
+@media (min-width: 1000px) {
   #menu {
     position: fixed;
     height: 10vh;
@@ -97,11 +118,24 @@ export default {
     justify-content: flex-end;
     align-items: center;
     z-index: 1;
+    transition: 0.3s;
+  }
+  #menu > h1 {
+    color: #111B1B;
+  }
+}
+@media (max-width: 999px) {
+  #header_img,
+  #header_img_front,
+  #header_scroll_color {
+    visibility: hidden;
+  }
+  #menu > h1 {
+    color: #E5E4C9;
   }
 }
 #menu > h1 {
   padding-right: 2vw;
-  color: #111B1B;
 }
 #posts {
   padding-top: 75vh;
