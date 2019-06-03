@@ -81,10 +81,10 @@ export default {
   margin-left: 50px;
   margin-right: 50px;
   background-color: #101C1C;
-  min-width: 230px;
-  max-width: 230px;
-  min-height: 230px;
-  max-height: 230px;
+  min-width: 200px;
+  max-width: 200px;
+  min-height: 200px;
+  max-height: 200px;
 }
 #text {
   padding: 0px 50px 0px 50px;

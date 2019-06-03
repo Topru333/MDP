@@ -3,25 +3,36 @@
     <div id="header">
       <div id="header_scroll_color"/>
       <img id="header_img" width="100%" height="100%" src="../assets/header.png">
+      <img id="header_img_mobile" width="100%" height="100%" src="../assets/mobile_header.png">
       <img id="header_img_front" width="100%" height="100%" src="../assets/header_front.png">
       <div id="menu">
         <h1>ВЕЖА</h1>
       </div>
-      <div id="posts">
-        <Post v-for="(post, index) in posts" :key="index" :fulltext="post.text" :header="post.header" :imgPath="post.img" :reverseDir="index%2===1"/>
-        <Post
-          fulltext="Blah blah blah blah blah blah
+    </div>
+    <div id="info">
+      <h3>Уникальный археологический памятник Верхнего Поволжья второй половины XIII века расположенный в Костромской низине</h3>
+    </div>
+    <div id="posts">
+      <Post
+        v-for="(post, index) in posts"
+        :key="index"
+        :fulltext="post.text"
+        :header="post.header"
+        :imgPath="post.img"
+        :reverseDir="index%2===1"
+      />
+      <Post
+        fulltext="Blah blah blah blah blah blah
          blah blah blah blah blah blah blah blah blah
          blah blah blah blah blah blah blah blah blah
          blah blah blah blah blah blah blah blah blah
          blah blah blah blah blah blah blah blah blah!"
-          header="Header"
-        />
-        <Post fulltext="hello!" header="Header" :reverseDir="true"/>
-        <Post fulltext="hello!" header="Header"/>
-        <Post fulltext="hello!" header="Header" :reverseDir="true"/>
-        <Post fulltext="hello!" header="Header"/>
-      </div>
+        header="Header"
+      />
+      <Post fulltext="hello!" header="Header" :reverseDir="true"/>
+      <Post fulltext="hello!" header="Header"/>
+      <Post fulltext="hello!" header="Header" :reverseDir="true"/>
+      <Post fulltext="hello!" header="Header"/>
     </div>
   </div>
 </template>
@@ -44,15 +55,15 @@ export default {
   },
   methods: {
     updatePosts: function() {
-      console.log('start update posts');
+      console.log("start update posts");
       db.collection("Posts")
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          this.posts.push(doc.data());
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            this.posts.push(doc.data());
+          });
         });
-      });
-      console.log('end update posts');
+      console.log("end update posts");
     }
   },
   created() {
@@ -84,12 +95,15 @@ export default {
 };
 </script>
 
-<style scoped>
-#header_img {
+<style lang="scss">
+#header_img,
+#header_img_mobile {
   position: absolute;
   transform: translate(-50%, -10%);
   z-index: -10;
   margin-top: 60px;
+}
+#header_img {
   background-color: #E5E4C9;
 }
 #header_img_front {
@@ -100,7 +114,7 @@ export default {
 }
 #header_scroll_color {
   position: absolute;
-  top: 90vh;
+  top: 99vh;
   width: 100vw;
   height: 100vh;
   background-color: #101C1C;
@@ -108,7 +122,7 @@ export default {
 }
 @media (min-width: 1000px) {
   #menu {
-    position: fixed;
+    position: absolute;
     height: 10vh;
     width: 96vw;
     margin: 1vw;
@@ -123,14 +137,35 @@ export default {
   #menu > h1 {
     color: #111B1B;
   }
+  #header_img_mobile {
+    display: none;
+  }
+  #info {
+    max-width: 60%;
+    float: right;
+    text-align: right;
+    font-size: 1.5vw;
+    padding-top: 100px;
+    padding-right: 45px;
+    font-family: "Oswald", sans-serif;
+    color: #111B1B;
+  }
 }
 @media (max-width: 999px) {
   #header_img,
   #header_img_front,
   #header_scroll_color {
-    visibility: hidden;
+    display: none;
   }
   #menu > h1 {
+    color: #E5E4C9;
+  }
+  #info {
+    font-size: 3vw;
+    padding-top: 100px;
+    padding-right: 45px;
+    padding-left: 45px;
+    font-family: "Oswald", sans-serif;
     color: #E5E4C9;
   }
 }
