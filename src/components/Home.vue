@@ -1,10 +1,15 @@
 <template>
   <div class="home">
     <div id="header">
-      <div id="header_scroll_color"/>
-      <img id="header_img" width="100%" height="100%" src="../assets/header.png">
       <img id="header_img_mobile" width="100%" height="100%" src="../assets/mobile_header.png">
-      <img id="header_img_front" width="100%" height="100%" src="../assets/header_front.png">
+      <div class="content">
+        <div class="paralax">
+          <div class="layer rocks2"></div>
+          <div class="layer rocks1"></div>
+          <div class="layer hills"></div>
+          <div class="layer foreground"></div>
+        </div>
+      </div>
       <div id="menu">
         <h1>ВЕЖА</h1>
       </div>
@@ -72,25 +77,32 @@ export default {
   },
   beforeMount() {
     $(window).scroll(function() {
-      let scrollval = $(this).scrollTop(); // It will return scroll value
       var percent =
         (document.body.scrollTop + document.documentElement.scrollTop) /
         (document.documentElement.scrollHeight -
           document.documentElement.clientHeight);
-      if (percent < 0.35) {
-        $("#menu").css("opacity", 1 - percent);
-      }
-      $("#header_img_front").css(
-        "transform",
-        "translate(-50%,-" + (scrollval / 9 + 7) + "%)"
-      );
-      $("#header_scroll_color").css(
-        "transform",
-        "translateY(-" + (scrollval / 9 + 7) + "%)"
-      );
       $(".post").css("filter", "sepia(" + (percent / 2) * 100 + "%)");
+      if (percent <= 0.22) {
+        $(".paralax").css(
+          "filter",
+          "brightness(" +
+          (1 - percent * 4) +
+          ") " +
+          "hue-rotate(" +
+          -percent * 200 +
+          "deg)"
+        );
+        $("#fill_color").css(
+          "filter",
+          "brightness(" +
+           (1 - percent * 4) +
+          ") " +
+          "hue-rotate(" +
+          - percent * 200 +
+          "deg)"
+        );
+      }
     });
-    console.log("mounted");
   }
 };
 </script>
@@ -104,7 +116,7 @@ export default {
   margin-top: 60px;
 }
 #header_img {
-  background-color: #E5E4C9;
+  background-color: #ff6c75;
 }
 #header_img_front {
   position: absolute;
@@ -121,13 +133,17 @@ export default {
   z-index: -8;
 }
 @media (min-width: 1000px) {
+  #posts {
+    padding-top: 100vh;
+  }
   #menu {
     position: absolute;
     height: 10vh;
     width: 96vw;
     margin: 1vw;
+    font-size: 1.3vw;
     border-radius: 20px;
-    background-color: #E5E4C9;
+    //background-color: #ffcc88;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -135,7 +151,7 @@ export default {
     transition: 0.3s;
   }
   #menu > h1 {
-    color: #111B1B;
+    color: #542642;
   }
   #header_img_mobile {
     display: none;
@@ -148,7 +164,170 @@ export default {
     padding-top: 100px;
     padding-right: 45px;
     font-family: "Oswald", sans-serif;
-    color: #111B1B;
+    color: #72345b;
+  }
+  #info > h3 {
+    position: relative;
+    z-index: 999;
+  }
+
+  $scrub: #C0B3A0;
+  $dayTime: true;
+  $dayDuration: 120s;
+  $foregroundDuration: 30s;
+  $hillsDuration: 60s;
+  $rocks1Duration: 120s;
+  $rocks2Duration: 240s;
+
+  section {
+    margin: 0;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: $scrub;
+  }
+
+  .content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .paralax {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: url("http://www.testomic.com/public/codepen-assets/img/paralax/background.jpg");
+    background-size: cover;
+    background-position: center;
+  }
+
+  .paralax .layer {
+    position: absolute;
+    width: 400%;
+  }
+
+  .paralax .foreground {
+    height: 50%;
+    bottom: 0;
+    background: url("/foreground.png") repeat-x;
+    background-size: 25% 100%;
+    animation: slideshow $foregroundDuration linear infinite;
+  }
+
+  .paralax .hills {
+    height: 40%;
+    bottom: 15%;
+    background: url("http://www.testomic.com/public/codepen-assets/img/paralax/hills.png")
+      repeat-x;
+    background-size: 25% 100%;
+    animation: slideshow $hillsDuration linear infinite;
+  }
+
+  .paralax .rocks1 {
+    height: 35%;
+    bottom: 25%;
+    background: url("/water.png") repeat-x;
+    background-size: 25% 100%;
+    animation: slideshow $rocks1Duration linear infinite;
+  }
+
+  .paralax .rocks2 {
+    height: 40%;
+    bottom: 15%;
+    background: url("http://www.testomic.com/public/codepen-assets/img/paralax/rocks2.png")
+      repeat-x;
+    background-size: 25% 100%;
+    animation: slideshow $rocks2Duration linear infinite;
+  }
+
+  @keyframes slideshow {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes dayToNight {
+    0% {
+      -webkit-filter: hue-rotate(0deg) brightness(1);
+      filter: hue-rotate(0deg) brightness(1);
+    }
+    50% {
+      -webkit-filter: hue-rotate(180deg) brightness(0.5);
+      filter: hue-rotate(180deg) brightness(0.5);
+    }
+    100% {
+      -webkit-filter: hue-rotate(0deg) brightness(1);
+      filter: hue-rotate(0deg) brightness(1);
+    }
+  }
+
+  /**	
+  * Nonatomic Branding
+  */
+  #link {
+    font-family: "Roboto", sans-serif;
+    position: fixed;
+    bottom: 5%;
+    width: 100%;
+    text-align: center;
+  }
+
+  .img-url {
+    text-decoration: none;
+  }
+
+  .url {
+    opacity: 0.5;
+    text-decoration: none;
+  }
+
+  a:link {
+    color: white;
+  }
+
+  a:visited {
+    color: white;
+  }
+
+  a:hover {
+    color: purple;
+  }
+
+  a:active {
+    color: white;
+  }
+
+  #small-logo {
+    width: 30px;
+    transform: translate(-10px, 12px);
+    opacity: 1;
+  }
+
+  /**
+  * Versions
+  */
+  #versions {
+    font-family: "Roboto", sans-serif;
+    position: fixed;
+    top: 5%;
+    width: 100%;
+    text-align: center;
+  }
+
+  .url-highlighted {
+    opacity: 1;
+    text-decoration: none;
+  }
+
+  .url-normal {
+    opacity: 0.5;
+    text-decoration: none;
   }
 }
 @media (max-width: 999px) {
@@ -168,11 +347,11 @@ export default {
     font-family: "Oswald", sans-serif;
     color: #E5E4C9;
   }
+  #posts {
+    padding-top: 75vh;
+  }
 }
 #menu > h1 {
   padding-right: 2vw;
-}
-#posts {
-  padding-top: 75vh;
 }
 </style>

@@ -27,7 +27,7 @@ export default {
     // a computed getter
     text: function() {
       return this.fulltext.length > 150 && !this.unfolded
-        ? (this.fulltext.substr(0, 150) + ' [...]')
+        ? this.fulltext.substr(0, 150) + " [...]"
         : this.fulltext;
     }
   },
@@ -51,10 +51,9 @@ export default {
   margin-top: 100px;
   height: 45vh;
   width: 80vw;
-  background-color: #E5E4C9;
   display: inline-block;
   border-radius: 50px;
-  opacity: 0.8;
+  opacity: 0.7;
   transition: 0.3s;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -62,20 +61,20 @@ export default {
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none;
+  -webkit-box-shadow: 0 0 6px 4px #ff6475;
+  -moz-box-shadow: 0 0 6px 4px #ff6475;
+  box-shadow: 0 0 10px 8px #ff6475;
 }
 .post.unfold > #content > #post_img {
   display: none;
 }
-.post.unfold > #content > #text {
-  width: 80vw;
-  max-width: 80vw;
-}
-.post.unfold > #content {
-  display: block;
-}
+
 #content {
-  margin-top: 8vh;
+  height: 100%;
+  width: 100%;
+  align-items: center;
   display: flex;
+  justify-content: space-around;
 }
 #content > img {
   margin-left: 50px;
@@ -85,15 +84,24 @@ export default {
   max-width: 200px;
   min-height: 200px;
   max-height: 200px;
+  border-radius: 50px;
+  -webkit-filter: sepia(1) hue-rotate(240deg);
+  filter: sepia(1) hue-rotate(220deg);
+  z-index: -1;
 }
 #text {
   padding: 0px 50px 0px 50px;
-  width: 40vw;
   max-height: 230px;
-  max-width: 40vw;
+  font-size: 20px;
+  color: #ff9e9e;
+  flex-basis: 80%;
+  z-index: -1;
 }
 #header {
+  padding: 0px 50px 0px 50px;
+
   font-weight: bold;
+  color: #ffc6c6;
 }
 .post:hover {
   opacity: 1;
@@ -141,23 +149,19 @@ export default {
     visibility: visible;
     width: 65vw;
     max-width: 65vw;
+    display: inline-table;
   }
 
   #text {
-    position: absolute;
+    display: none;
     visibility: hidden;
   }
   #content {
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
   }
   #content > img {
     margin-left: 0px;
     margin-right: 0px;
-  }
-  #content > div {
-    margin-bottom: 20px;
   }
 }
 </style>
