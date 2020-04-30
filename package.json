@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "firebase": "6.1.0",
-    "jquery": "3.4.1",
+    "jquery": "3.5.0",
     "vue": "^2.5.22"
   },
   "devDependencies": {
